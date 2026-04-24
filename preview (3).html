@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>企查查新注册用户 AI 营销 Agent 一期方案流程图</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-2: #f9fbff;
+      --text: #172033;
+      --subtext: #5f6b85;
+      --line: #dbe3f0;
+      --line-strong: #bfcce3;
+      --blue: #1e66f5;
+      --blue-2: #eaf1ff;
+      --green: #0f9d77;
+      --green-2: #e8fbf4;
+      --orange: #c97712;
+      --orange-2: #fff5e8;
+      --purple: #6f42c1;
+      --purple-2: #f3ecff;
+      --red: #c73b3b;
+      --red-2: #fff0f0;
+      --shadow: 0 10px 30px rgba(19, 37, 84, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #f7f9fd 0%, #eef3fb 100%);
+      color: var(--text);
+    }
+
+    .page {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #172b67 0%, #1c4fd7 60%, #4b7eff 100%);
+      color: #fff;
+      border-radius: 28px;
+      padding: 28px 30px 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -100px auto;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.24) 0%, rgba(255,255,255,0) 70%);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.2;
+      letter-spacing: 0.2px;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      max-width: 920px;
+      color: rgba(255,255,255,.88);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .meta-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      padding: 14px 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .meta-card .label {
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      margin-bottom: 6px;
+    }
+
+    .meta-card .value {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 22px 0 16px;
+      flex-wrap: wrap;
+    }
+
+    .tabs, .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn, .filter-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.76);
+      color: var(--subtext);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .tab-btn.active, .filter-btn.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      box-shadow: 0 8px 20px rgba(30,102,245,.22);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(340px, 0.9fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(219,227,240,.9);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid #eef2f9;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
+      color: #1d2942;
+    }
+
+    .panel-subtitle {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--subtext);
+    }
+
+    .flow-wrap {
+      padding: 16px 16px 20px;
+      overflow: auto;
+      min-height: 720px;
+      background:
+        linear-gradient(to right, rgba(219,227,240,.5) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(to bottom, rgba(219,227,240,.5) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(180deg, #fbfcff 0%, #f5f8ff 100%);
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: stretch;
+      gap: 18px;
+      min-width: 1120px;
+      padding: 6px 6px 20px;
+    }
+
+    .flow-node {
+      width: 238px;
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      padding: 14px;
+      position: relative;
+      box-shadow: 0 10px 24px rgba(26, 43, 84, .05);
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      flex: 0 0 auto;
+    }
+
+    .flow-node:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 30px rgba(26, 43, 84, .1);
+    }
+
+    .flow-node.selected {
+      border-color: var(--blue);
+      box-shadow: 0 20px 36px rgba(30,102,245,.15);
+      transform: translateY(-2px);
+    }
+
+    .flow-node.hidden {
+      opacity: .22;
+      filter: grayscale(.15);
+    }
+
+    .node-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .node-index {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+      flex: 0 0 auto;
+    }
+
+    .node-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .flow-node h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+      color: #1e2740;
+    }
+
+    .flow-node p {
+      margin: 9px 0 0;
+      font-size: 13px;
+      color: var(--subtext);
+      line-height: 1.6;
+      min-height: 64px;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      background: #f2f6ff;
+      border: 1px solid #dfe9ff;
+      color: #35508f;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .arrow {
+      width: 50px;
+      flex: 0 0 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .arrow::before {
+      content: "";
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #bfd0f2 0%, #7ea6ff 100%);
+      border-radius: 999px;
+    }
+
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 11px solid #7ea6ff;
+    }
+
+    .milestones {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 0 16px 18px;
+    }
+
+    .milestone {
+      background: #fbfdff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .milestone h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: #1f2a44;
+    }
+
+    .milestone p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--subtext);
+      line-height: 1.65;
+    }
+
+    .detail-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fbfcff 0%, #f6f9ff 100%);
+      min-height: 720px;
+    }
+
+    .node-summary {
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+
+    .node-summary .eyebrow {
+      font-size: 12px;
+      color: var(--subtext);
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+
+    .node-summary h2 {
+      margin: 8px 0 8px;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .node-summary p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--subtext);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      background: #f8fbff;
+      border: 1px solid #e5ecf8;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .metric .k {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-bottom: 6px;
+    }
+
+    .metric .v {
+      font-size: 14px;
+      font-weight: 800;
+      color: #203054;
+      line-height: 1.5;
+    }
+
+    .accordion {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .acc-btn {
+      width: 100%;
+      padding: 14px 16px;
+      background: #fff;
+      border: 0;
+      border-bottom: 1px solid #edf2fb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+      color: #213155;
+    }
+
+    .acc-btn .hint {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--subtext);
+    }
+
+    .acc-panel {
+      padding: 14px 16px 16px;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: #fbfcff;
+      border: 1px solid #e8eef8;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #2a3857;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 16px 18px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--subtext);
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 10px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .view {
+      display: none;
+    }
+    .view.active { display: block; }
+
+    .graph-wrap {
+      padding: 18px;
+      overflow: auto;
+      min-height: 720px;
+      background:
+        linear-gradient(to right, rgba(219,227,240,.45) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(to bottom, rgba(219,227,240,.45) 1px, transparent 1px) 0 0 / 28px 28px,
+        linear-gradient(180deg, #fbfcff 0%, #f3f7ff 100%);
+    }
+
+    .graph-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 260px);
+      gap: 18px 20px;
+      min-width: 1120px;
+      align-items: start;
+    }
+
+    .graph-node {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 10px 20px rgba(28, 42, 80, .05);
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .graph-node:hover, .graph-node.selected {
+      border-color: var(--blue);
+      box-shadow: 0 18px 30px rgba(30,102,245,.12);
+      transform: translateY(-2px);
+    }
+
+    .graph-node small {
+      display: inline-block;
+      color: var(--subtext);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .graph-node h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: #1d2a45;
+    }
+
+    .graph-node p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--subtext);
+    }
+
+    .lane-wrap {
+      padding: 18px;
+      min-height: 720px;
+      display: grid;
+      gap: 16px;
+      background: linear-gradient(180deg, #fbfcff 0%, #f4f8ff 100%);
+    }
+
+    .lane {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(26,43,84,.05);
+    }
+
+    .lane-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #eef2f9;
+      background: #fbfdff;
+    }
+
+    .lane-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .lane-body {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .lane-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .lane-card:hover, .lane-card.selected {
+      border-color: var(--blue);
+      box-shadow: 0 12px 24px rgba(30,102,245,.12);
+      transform: translateY(-2px);
+    }
+
+    .lane-card h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .lane-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--subtext);
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--subtext);
+      font-size: 12px;
+      line-height: 1.8;
+      padding: 14px 16px;
+      background: rgba(255,255,255,.7);
+      border: 1px dashed var(--line-strong);
+      border-radius: 18px;
+    }
+
+    .chip-blue { background: var(--blue-2); color: var(--blue); }
+    .chip-green { background: var(--green-2); color: var(--green); }
+    .chip-orange { background: var(--orange-2); color: var(--orange); }
+    .chip-purple { background: var(--purple-2); color: var(--purple); }
+    .chip-red { background: var(--red-2); color: var(--red); }
+
+    .bg-blue { background: var(--blue); }
+    .bg-green { background: var(--green); }
+    .bg-orange { background: var(--orange); }
+    .bg-purple { background: var(--purple); }
+    .bg-red { background: var(--red); }
+
+    @media (max-width: 1200px) {
+      .layout { grid-template-columns: 1fr; }
+      .detail-wrap, .flow-wrap, .graph-wrap, .lane-wrap { min-height: auto; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-meta { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .metrics, .milestones, .lane-body { grid-template-columns: 1fr; }
+      .page { padding: 16px; }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>企查查新注册用户 AI 营销 Agent 一期方案 · 交互式流程图</h1>
+      <p>
+        这份页面用于领导汇报，核心目标不是展示“又做了一个 AI 工具”，而是把首日新注册用户转化链路，明确成一个由
+        <strong>AI 决策中枢 + 规则护栏 + 现有营销系统</strong> 共同协作的实时决策系统。
+        点击任意节点，可查看该环节的定位、当前要做的事情、依赖系统 / 数据、产出物与风险点。
+      </p>
+      <div class="hero-meta">
+        <div class="meta-card">
+          <div class="label">一期覆盖范围</div>
+          <div class="value">仅覆盖 D0 新注册用户首日转化</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">决策窗口</div>
+          <div class="value">W1：0-5 分钟<br/>W2：5-30 分钟<br/>W3：3-6 小时</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Agent 定位</div>
+          <div class="value">理解用户 → 选择策略 → 编排执行</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">LLM 月成本口径</div>
+          <div class="value">约 2.1 万 - 3.4 万元 / 月</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="tabs">
+        <button class="tab-btn active" data-view="business">业务主链路</button>
+        <button class="tab-btn" data-view="graph">Agent 编排视图</button>
+        <button class="tab-btn" data-view="collab">系统协同视图</button>
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">全部职责</button>
+        <button class="filter-btn" data-filter="data">数据 / 埋点</button>
+        <button class="filter-btn" data-filter="algo">算法 / LLM</button>
+        <button class="filter-btn" data-filter="product">产品 / 策略</button>
+        <button class="filter-btn" data-filter="ops">运营 / 触达</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title" id="canvasTitle">业务主链路</h2>
+            <p class="panel-subtitle" id="canvasSubtitle">从事件接入到反馈回流，适合老板快速理解核心链路和当前建设重点。</p>
+          </div>
+        </div>
+
+        <div class="view active" id="view-business">
+          <div class="flow-wrap">
+            <div class="flow-row" id="businessFlow"></div>
+          </div>
+          <div class="legend" id="businessLegend"></div>
+          <div class="milestones">
+            <div class="milestone">
+              <h4>W1：注册后 0-5 分钟</h4>
+              <p>关注首屏认知、首次搜索、首次进入企业页。适合判断是否需要轻导购与价值教育。</p>
+            </div>
+            <div class="milestone">
+              <h4>W2：注册后 5-30 分钟</h4>
+              <p>关注连续浏览、多企业对比、会员页查看等深度行为。适合判断真实任务与购买成熟度。</p>
+            </div>
+            <div class="milestone">
+              <h4>W3：注册后 3-6 小时</h4>
+              <p>关注退出后是否回流。适合处理回流提醒、价格刺激和渠道兜底。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="view" id="view-graph">
+          <div class="graph-wrap">
+            <div class="graph-grid" id="graphFlow"></div>
+          </div>
+          <div class="legend" id="graphLegend"></div>
+        </div>
+
+        <div class="view" id="view-collab">
+          <div class="lane-wrap" id="collabFlow"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">节点详情</h2>
+            <p class="panel-subtitle">点击左侧节点后，右侧会同步展示这个环节当前最需要推进的建设动作。</p>
+          </div>
+        </div>
+        <div class="detail-wrap">
+          <div class="node-summary">
+            <div class="eyebrow" id="detailEyebrow">业务主链路 · Node</div>
+            <h2 id="detailTitle">事件接入与窗口切分</h2>
+            <p id="detailDesc"></p>
+            <div class="metrics">
+              <div class="metric">
+                <div class="k">主要责任</div>
+                <div class="v" id="metricOwner"></div>
+              </div>
+              <div class="metric">
+                <div class="k">核心输出</div>
+                <div class="v" id="metricOutput"></div>
+              </div>
+              <div class="metric">
+                <div class="k">当前阶段</div>
+                <div class="v" id="metricStage"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <button class="acc-btn" type="button">
+              <span>当前要做的事情</span>
+              <span class="hint">务必先做清楚，才能进入下一节点</span>
+            </button>
+            <div class="acc-panel"><ul class="list" id="todoList"></ul></div>
+          </div>
+
+          <div class="accordion">
+            <button class="acc-btn" type="button">
+              <span>依赖系统 / 数据</span>
+              <span class="hint">需要打通或确认口径的基础能力</span>
+            </button>
+            <div class="acc-panel"><ul class="list" id="depList"></ul></div>
+          </div>
+
+          <div class="accordion">
+            <button class="acc-btn" type="button">
+              <span>关键产出物</span>
+              <span class="hint">这个节点完成后，对外应该交付什么</span>
+            </button>
+            <div class="acc-panel"><ul class="list" id="outList"></ul></div>
+          </div>
+
+          <div class="accordion">
+            <button class="acc-btn" type="button">
+              <span>风险点 / 管控点</span>
+              <span class="hint">领导通常会追问“哪里最容易失控”</span>
+            </button>
+            <div class="acc-panel"><ul class="list" id="riskList"></ul></div>
+          </div>
+
+          <div class="footer-note" id="detailNote"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const roleMap = {
+      data: { label: '数据 / 埋点', color: 'chip-blue', dot: 'bg-blue' },
+      algo: { label: '算法 / LLM', color: 'chip-purple', dot: 'bg-purple' },
+      product: { label: '产品 / 策略', color: 'chip-green', dot: 'bg-green' },
+      ops: { label: '运营 / 触达', color: 'chip-orange', dot: 'bg-orange' },
+      risk: { label: '规则 / 风控', color: 'chip-red', dot: 'bg-red' }
+    };
+
+    const businessNodes = [
+      {
+        id: 'b1',
+        index: '01',
+        title: '事件接入',
+        desc: '把注册、搜索、企业页、会员页、回执等关键行为统一纳入可计算的事件流。',
+        owner: '数据 + 产品',
+        stage: '一期必做',
+        output: '统一事件流',
+        tags: ['data', 'product'],
+        badge: '基础层',
+        badgeClass: 'chip-blue',
+        note: '这是整条链路的地基。埋点口径不准，后面所有“AI 智能判断”都会变成伪精细化。',
+        todos: [
+          '打通注册完成、搜索行为、企业详情页浏览、会员页进入 / 退出、Push / 短信回执等关键事件。',
+          '统一事件口径，明确字段命名、事件粒度、时区、去重规则。',
+          '把用户画像标签并入首日事件链路，至少覆盖渠道来源、设备特征、权限状态、历史分群标签。',
+          '完成同一用户首日行为的会话聚合，为后续摘要和决策提供连续上下文。'
+        ],
+        deps: [
+          '现有 App 埋点体系与日志采集链路。',
+          '用户画像标签系统 / CDP 标签服务。',
+          'Push / 短信回执数据。',
+          '可用于首日用户会话拼接的 user_id / session_id / trace_id。'
+        ],
+        outputs: [
+          '首日关键事件清单与埋点字典。',
+          '统一后的事件流 Schema。',
+          '首日行为会话聚合结果。'
+        ],
+        risks: [
+          '关键事件缺失会导致后续判断失真。',
+          '画像标签更新不及时，会把老口径误带入新链路。',
+          '不同系统的 user_id 映射不一致，会导致回流无法闭环。'
+        ]
+      },
+      {
+        id: 'b2',
+        index: '02',
+        title: '决策窗口切分',
+        desc: '把连续事件压缩成少数几个“该判断了”的时机，避免每个事件都调用模型。',
+        owner: '产品 + 数据',
+        stage: '一期必做',
+        output: 'W1 / W2 / W3 窗口',
+        tags: ['product', 'data'],
+        badge: '控制调用量',
+        badgeClass: 'chip-green',
+        note: '窗口切分本质上是“什么时候值得做一次判断”。这一步直接决定后面成本、时效和用户体验。',
+        todos: [
+          '固化 W1（0-5 分钟）、W2（5-30 分钟）、W3（3-6 小时）三个决策窗口。',
+          '定义每个窗口的触发条件、关闭条件、重入条件。',
+          '明确哪些行为进入当前窗口、哪些行为作为补充 evidence 滞后合并。',
+          '将“窗口级缓存 / 去重”纳入方案，避免同一用户同一窗口重复计算。'
+        ],
+        deps: [
+          '事件时间戳与事件序列必须准确。',
+          '产品侧对关键判断时机有业务经验输入。',
+          '实时流处理或准实时聚合能力。'
+        ],
+        outputs: [
+          '窗口规则配置表。',
+          '窗口级触发器。',
+          '窗口级去重策略。'
+        ],
+        risks: [
+          '切分过细会抬高 LLM 调用次数。',
+          '切分过粗会错过关键触达时机。',
+          '窗口定义频繁变动会影响实验可比性。'
+        ]
+      },
+      {
+        id: 'b3',
+        index: '03',
+        title: '结构化摘要',
+        desc: '把离散埋点转换成可判断语义，形成可供规则和模型共同消费的标准输入。',
+        owner: '数据 + 算法',
+        stage: '一期必做',
+        output: 'structured_summary',
+        tags: ['data', 'algo'],
+        badge: '模型输入层',
+        badgeClass: 'chip-purple',
+        note: '摘要层不是“自然语言总结”，而是“结构化状态压缩”。不先做摘要，模型成本和误判率都会很高。',
+        todos: [
+          '定义统一的摘要 Schema，至少覆盖事实层、序列层、语义层、决策层。',
+          '完成轨迹清洗、标准化、去噪和高价值事件提炼。',
+          '建立 evidence 规则，把“连续看风险模块、多家企业对比、进会员页未付费”等行为转成标准证据。',
+          '输出稳定的 structured_summary，避免每次由模型自由组织上下文。'
+        ],
+        deps: [
+          '完整的窗口内事件序列。',
+          '摘要字段定义与下游输出格式。',
+          '高价值行为识别规则库。'
+        ],
+        outputs: [
+          '摘要 Schema 文档。',
+          'structured_summary JSON。',
+          'evidence_list 证据集合。'
+        ],
+        risks: [
+          '把原始埋点直接喂给模型，会造成输入冗长与不稳定。',
+          '摘要逻辑若不稳定，模型结果也会波动。',
+          '摘要字段过少会导致判断不够细，字段过多又会拉高 Token。'
+        ]
+      },
+      {
+        id: 'b4',
+        index: '04',
+        title: 'LLM 识别意图 / 阻力',
+        desc: '由 LLM 识别用户当前在做什么，以及为什么还没转化。',
+        owner: '算法 + 产品',
+        stage: '一期必做',
+        output: 'intent + resistance',
+        tags: ['algo', 'product'],
+        badge: '判断中枢',
+        badgeClass: 'chip-purple',
+        note: '这一环决定 Agent 是否真正“理解用户”。但它必须在标签体系和 evidence 约束下工作，而不是自由发挥。',
+        todos: [
+          '定义意图标签体系，例如风险尽调、关系穿透、商机拓客、套餐比较、团队采购、低意图探索。',
+          '定义阻力标签体系，例如价值未理解、价格敏感、方案不匹配、决策被打断、触达疲劳。',
+          '定义 prompt 模板、标准输出格式、confidence 与 reason_code。',
+          '建设小规模人工评测集，对意图识别和阻力识别单独评测。'
+        ],
+        deps: [
+          '摘要 Schema 与 evidence 规则。',
+          '标签定义、人工标注口径。',
+          '模型路由策略与低置信度降级机制。'
+        ],
+        outputs: [
+          'TopN 意图候选。',
+          'TopN 阻力候选。',
+          'confidence / evidence / reason_code。'
+        ],
+        risks: [
+          '如果没有标签边界，LLM 会自行发明概念。',
+          '如果没有 evidence 约束，容易过度推断。',
+          '若低置信度不降级，会把误判直接送入执行层。'
+        ]
+      },
+      {
+        id: 'b5',
+        index: '05',
+        title: '策略排序 + 规则护栏',
+        desc: '先决定该走哪一类策略，再由规则系统决定能不能执行。',
+        owner: '产品 + 风控 + 算法',
+        stage: '一期必做',
+        output: 'selected_strategy',
+        tags: ['product', 'risk', 'algo'],
+        badge: '经营边界',
+        badgeClass: 'chip-red',
+        note: '这里是“模型能理解用户”与“业务不允许失控”之间的分界线。模型只负责判断，规则负责硬控。',
+        todos: [
+          '建立白名单策略池：价值教育、权益解释、价格刺激、回流提醒、企业采购分流。',
+          '定义候选策略排序逻辑，考虑意图、阻力、成熟度、渠道可达性。',
+          '接入频控、预算、券额档位、Push / 短信资格、黑白名单、法务限制。',
+          '固化“不允许 LLM 自主决定券额 / 优惠权益 / 直接执行触达”的系统边界。'
+        ],
+        deps: [
+          '策略池配置中心。',
+          '预算与券系统。',
+          '频控服务、法务限制、黑白名单能力。',
+          '企业版 / 个人版分流规则。'
+        ],
+        outputs: [
+          '候选策略排序结果。',
+          'guardrail_result。',
+          '最终 selected_strategy / selected_channel。'
+        ],
+        risks: [
+          '只靠模型排序、不加护栏，会造成过度触达或补贴浪费。',
+          '策略池不白名单化，会逐步演变成无法治理的黑盒。',
+          '企业采购与个人 VIP 路径混淆，会损失高价值机会。'
+        ]
+      },
+      {
+        id: 'b6',
+        index: '06',
+        title: '触达执行',
+        desc: '把最终动作落到站内弹窗、Banner、Push、短信等具体渠道。',
+        owner: '运营 + 产品 + 工程',
+        stage: '一期必做',
+        output: 'delivery_action',
+        tags: ['ops', 'product'],
+        badge: '用户可感知层',
+        badgeClass: 'chip-orange',
+        note: '这里是用户真正感知系统价值的环节。前面判断再准，如果执行节奏、模板变量和渠道优先级混乱，体验也会被打坏。',
+        todos: [
+          '打通站内弹窗、首页 Banner / 浮层、企业详情页导购、会员页导购、Push、短信通道。',
+          '配置模板、变量槽位、发送时机和渠道优先级。',
+          '站内优先、Push 次级、短信兜底，明确不同渠道的打扰强度边界。',
+          '把 execution_id / touchpoint_id 等关键字段沉淀下来，为回流和 replay 做准备。'
+        ],
+        deps: [
+          '现有营销系统与推送系统。',
+          '模板配置中心。',
+          '渠道可达性与发送结果回执。'
+        ],
+        outputs: [
+          '最终触达内容。',
+          '触达渠道与发送记录。',
+          'execution_id / external_execution_id。'
+        ],
+        risks: [
+          '模型临场生成未经约束的文案，会出现表达失控。',
+          '短信滥用会带来投诉与成本压力。',
+          '执行成功但未记录 execution_id，后面很难归因。'
+        ]
+      },
+      {
+        id: 'b7',
+        index: '07',
+        title: '反馈回流与持续优化',
+        desc: '把曝光、点击、到付费页、支付、退订等结果重新回流到系统里。',
+        owner: '数据 + 算法 + 产品',
+        stage: '一期必做',
+        output: 'replay / A/B / 评测',
+        tags: ['data', 'algo', 'product'],
+        badge: '闭环优化层',
+        badgeClass: 'chip-blue',
+        note: '没有回流，这就只是一次性策略系统；有回流，它才会变成能持续变好的决策系统。',
+        todos: [
+          '回收曝光、点击、到付费页、支付成功 / 失败、退订 / 投诉 / 关闭等结果数据。',
+          '建设 replay 回放能力，用于复盘“问题出在摘要、识别、排序还是执行”。',
+          '建设 A/B 实验看板，至少能比较现网规则与 Agent 策略。',
+          '把结果反哺到标签、prompt、规则和评测集迭代。'
+        ],
+        deps: [
+          '营销执行结果回执。',
+          '支付与会员页行为数据。',
+          '实验平台 / 分流能力 / 评测日志。'
+        ],
+        outputs: [
+          'replay_snapshot。',
+          'A/B 实验报表。',
+          'Prompt / 规则 / 标签优化清单。'
+        ],
+        risks: [
+          '如果没有闭环归因，后续优化只能靠拍脑袋。',
+          '没有 replay，就无法定位哪一个节点出了问题。',
+          '若只看转化，不看投诉 / 退订，会把体验风险掩盖掉。'
+        ]
+      }
+    ];
+
+    const graphNodes = [
+      { id: 'g1', title: 'Input Node', lane: 'L1', short: '拉取事件轨迹、画像标签、渠道回执并做基础校验。', tags: ['data'], owner: '数据 / 接入层', stage: '主链路必经', output: 'event_stream + profile_tags', note: '把输入做成显式状态，而不是散落在各系统的临时读取。', todos: ['接入事件轨迹查询工具。', '接入画像标签工具。', '补基础校验与缺失兜底。'], deps: ['事件明细', '画像标签', '回执'], outputs: ['event_stream', 'profile_tags'], risks: ['输入缺失会让后续所有节点被迫降级。'] },
+      { id: 'g2', title: 'Window Node', lane: 'L1', short: '把用户放入 W1 / W2 / W3 决策窗口。', tags: ['product', 'data'], owner: '产品 / 数据', stage: '主链路必经', output: 'current_window', note: '这是 Agent 编排里的第一层控制阀。', todos: ['固化窗口规则。', '明确挂起 / 重入条件。'], deps: ['事件时间', '窗口规则'], outputs: ['current_window'], risks: ['窗口判断不稳会直接影响调用频次。'] },
+      { id: 'g3', title: 'Summary Node', lane: 'L2', short: '做轨迹清洗、标准化、去噪与高价值行为提炼。', tags: ['data', 'algo'], owner: '数据 / 算法', stage: '主链路必经', output: 'structured_summary', note: '这里要保证状态可追踪、可回放。', todos: ['定义 structured_summary。', '沉淀 evidence_list。'], deps: ['窗口内事件流'], outputs: ['structured_summary', 'evidence_list'], risks: ['如果把自然语言输出当状态，会很难复盘。'] },
+      { id: 'g4', title: 'Intent Node', lane: 'L2', short: '判断主意图、次意图与购买成熟度。', tags: ['algo'], owner: '算法 / LLM', stage: '主链路必经', output: 'intent_candidates', note: '意图识别最好单独评测，不和阻力混为一个黑盒。', todos: ['定义意图标签。', '输出 confidence + evidence + reason_code。'], deps: ['摘要', '标签体系'], outputs: ['intent_candidates', 'purchase_maturity'], risks: ['没有 evidence 会出现过度推断。'] },
+      { id: 'g5', title: 'Resistance Node', lane: 'L2', short: '判断当前主要阻力，并与意图识别解耦。', tags: ['algo'], owner: '算法 / LLM', stage: '主链路必经', output: 'resistance_candidates', note: '阻力判断越稳定，策略越不容易“乱打折”。', todos: ['定义阻力标签。', '建立阻力评测集。'], deps: ['摘要', '阻力标签'], outputs: ['resistance_candidates'], risks: ['把价格敏感和价值未理解混淆，会直接误导策略。'] },
+      { id: 'g6', title: 'Strategy Node', lane: 'L3', short: '生成候选策略方向。', tags: ['product', 'algo'], owner: '产品 / 策略', stage: '主链路必经', output: 'strategy_candidates', note: '这里只能从白名单策略池里“选”，不能自由“造”。', todos: ['建立策略池。', '建立排序函数。'], deps: ['意图 + 阻力 + 成熟度'], outputs: ['strategy_candidates'], risks: ['候选策略过多会造成治理复杂度上升。'] },
+      { id: 'g7', title: 'Guardrail Node', lane: 'L3', short: '完成频控、预算、券额、渠道资格、黑白名单、法务限制等校验。', tags: ['risk', 'product'], owner: '规则 / 风控', stage: '主链路必经', output: 'guardrail_result', note: '所有高风险动作必须经过这一层。', todos: ['打通频控服务。', '预算与券额校验。', '法务 / 黑白名单校验。'], deps: ['规则中心', '预算系统', '资格系统'], outputs: ['guardrail_result', 'selected_channel'], risks: ['护栏缺失时，Agent 会快速失控。'] },
+      { id: 'g8', title: 'Execution Node', lane: 'L4', short: '把动作落到站内、Push、短信等渠道。', tags: ['ops'], owner: '运营 / 执行系统', stage: '主链路必经', output: 'execution_result', note: '执行是 Tool，不是 LLM。', todos: ['对接站内展示。', '对接 Push / 短信发送。'], deps: ['营销系统'], outputs: ['execution_result'], risks: ['没有 external_execution_id 就难以回流。'] },
+      { id: 'g9', title: 'Evaluation Node', lane: 'L4', short: '汇总曝光、点击、回流、支付等结果，沉淀到 replay 和优化机制。', tags: ['data', 'product', 'algo'], owner: '数据 / 策略评测', stage: '主链路必经', output: 'evaluation_result', note: '这是让 Agent 从“能跑”变成“会变好”的关键。', todos: ['建设 replay。', '建设 A/B 与评测。'], deps: ['执行结果', '支付结果'], outputs: ['evaluation_result', 'replay_snapshot'], risks: ['没有评测，模型演进就会失控。'] },
+      { id: 'g10', title: 'Planner Node（可选）', lane: 'L3', short: '仅对低置信度、高复杂度样本补充判断。', tags: ['algo'], owner: '算法 / 编排', stage: '二期增强', output: '补充判断', note: '一期不建议全量启用，避免把简单问题复杂化。', todos: ['只在低置信度分支启用。'], deps: ['低置信度判断'], outputs: ['supplement_plan'], risks: ['规划过度会显著拉高成本。'] },
+      { id: 'g11', title: 'Human Review Node（可选）', lane: 'L3', short: '高风险权益或敏感触达的人审兜底。', tags: ['risk', 'ops'], owner: '运营 / 法务', stage: '二期增强', output: '人工审核结果', note: '只对少量高风险样本启用。', todos: ['定义触发条件。'], deps: ['高风险动作'], outputs: ['review_result'], risks: ['介入过多会拖慢实时链路。'] }
+    ];
+
+    const collabLanes = [
+      {
+        id: 'c1',
+        title: '在线判断型流程（站内实时）',
+        desc: '适用于站内导购、会员页提示、企业详情页权益提示等实时场景。',
+        cards: [
+          { id: 'c1-1', title: 'CDP / 标签系统', short: '提供在线分群判断、用户标签与历史分群结果。', owner: 'CDP', stage: '现有能力复用', output: 'segment_check / profile_tags', tags: ['data'], note: 'Agent 不替代 CDP，而是在命中分群前后做更细语义判断。', todos: ['开放在线分群接口。', '统一 segment_id / version 口径。'], deps: ['CDP 在线接口'], outputs: ['segment_check_result'], risks: ['分群口径变动会影响策略命中稳定性。'] },
+          { id: 'c1-2', title: 'Agent 决策层', short: '读取当前事件轨迹、识别意图 / 阻力，输出策略与渠道。', owner: 'Agent', stage: '一期核心建设', output: 'selected_strategy', tags: ['algo', 'product'], note: 'Agent 是“判断与编排中枢”，不是底层执行系统。', todos: ['生成结构化摘要。', '完成意图 / 阻力识别。', '调用 guardrail。'], deps: ['事件轨迹', '标签', '规则中心'], outputs: ['strategy_package_id'], risks: ['如果没有 guardrail，实时判断很容易失控。'] },
+          { id: 'c1-3', title: '营销系统 / 页面承载', short: '根据 Agent 输出，在页面上展示对应导购内容。', owner: '营销系统', stage: '现有能力复用', output: '站内内容展示', tags: ['ops', 'product'], note: '最终由业务系统调用营销系统接口完成展示。', todos: ['接策略渲染参数。', '记录展示与点击回执。'], deps: ['模板中心', '营销展示接口'], outputs: ['touchpoint_id', '展示结果'], risks: ['展示成功但不回写，会导致无法复盘。'] }
+        ]
+      },
+      {
+        id: 'c2',
+        title: '批量推送型流程（Push / 短信）',
+        desc: '适用于 Push、短信、定时召回等场景。重点不是“同一批人发同一条”，而是“同一分群内再细分策略”。',
+        cards: [
+          { id: 'c2-1', title: 'CDP 候选人群', short: '先提供目标分群或候选人群明细。', owner: 'CDP', stage: '现有能力复用', output: '候选人群明细', tags: ['data'], note: 'CDP 负责圈人，不负责理解“这一批人现在到底卡在哪”。', todos: ['输出分群用户明细。', '补 audience_source / segment_version。'], deps: ['CDP 人群接口'], outputs: ['candidate_users'], risks: ['分群过粗会让后续策略分层压力变大。'] },
+          { id: 'c2-2', title: 'Agent 分层决策', short: '对同一候选人群再按意图 / 阻力 / 策略细分。', owner: 'Agent', stage: '一期核心建设', output: '策略包', tags: ['algo', 'product'], note: '这是 Agent 相对传统营销系统最有价值的地方。', todos: ['对候选人群做补充识别。', '输出权益解释 / 回流提醒 / 价格刺激等策略包。', '过滤预算、频控、渠道资格。'], deps: ['候选人群', '规则中心'], outputs: ['strategy_package_id', 'delivery_mode'], risks: ['批量分层如果没有强规则，会把噪音大规模放大。'] },
+          { id: 'c2-3', title: '营销推送系统', short: '按最终策略包执行 Push / 短信发送并回传结果。', owner: '营销系统', stage: '现有能力复用', output: '发送与回执', tags: ['ops'], note: 'Agent 不直接替代推送系统，而是上层决策与编排。', todos: ['接收策略包与用户明细。', '回传发送、点击、退订、支付结果。'], deps: ['Push / 短信渠道', '回执接口'], outputs: ['external_execution_id', 'feedback'], risks: ['没有反馈回写，批量召回就无法优化。'] }
+        ]
+      }
+    ];
+
+    let activeView = 'business';
+    let activeFilter = 'all';
+    let selectedId = 'b1';
+
+    const businessFlow = document.getElementById('businessFlow');
+    const graphFlow = document.getElementById('graphFlow');
+    const collabFlow = document.getElementById('collabFlow');
+    const businessLegend = document.getElementById('businessLegend');
+    const graphLegend = document.getElementById('graphLegend');
+
+    const detailEyebrow = document.getElementById('detailEyebrow');
+    const detailTitle = document.getElementById('detailTitle');
+    const detailDesc = document.getElementById('detailDesc');
+    const metricOwner = document.getElementById('metricOwner');
+    const metricOutput = document.getElementById('metricOutput');
+    const metricStage = document.getElementById('metricStage');
+    const todoList = document.getElementById('todoList');
+    const depList = document.getElementById('depList');
+    const outList = document.getElementById('outList');
+    const riskList = document.getElementById('riskList');
+    const detailNote = document.getElementById('detailNote');
+
+    const canvasTitle = document.getElementById('canvasTitle');
+    const canvasSubtitle = document.getElementById('canvasSubtitle');
+
+    function buildLegend(target) {
+      target.innerHTML = Object.keys(roleMap).map(key => `
+        <div class="legend-item">
+          <span class="swatch ${roleMap[key].dot}"></span>
+          <span>${roleMap[key].label}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderBusinessFlow() {
+      businessFlow.innerHTML = '';
+      businessNodes.forEach((node, idx) => {
+        const mainRole = roleMap[node.tags[0]];
+        const roleNames = node.tags.map(t => roleMap[t] ? roleMap[t].label : t);
+        const hide = activeFilter !== 'all' && !node.tags.includes(activeFilter);
+        const nodeEl = document.createElement('div');
+        nodeEl.className = `flow-node ${selectedId === node.id ? 'selected' : ''} ${hide ? 'hidden' : ''}`;
+        nodeEl.dataset.id = node.id;
+        nodeEl.innerHTML = `
+          <div class="node-top">
+            <div class="node-index ${mainRole.dot}">${node.index}</div>
+            <div class="node-badge ${node.badgeClass}">${node.badge}</div>
+          </div>
+          <h3>${node.title}</h3>
+          <p>${node.desc}</p>
+          <div class="tags">${roleNames.map(r => `<span class="tag">${r}</span>`).join('')}</div>
+        `;
+        nodeEl.addEventListener('click', () => {
+          selectedId = node.id;
+          renderAll();
+        });
+        businessFlow.appendChild(nodeEl);
+
+        if (idx < businessNodes.length - 1) {
+          const arrow = document.createElement('div');
+          arrow.className = 'arrow';
+          businessFlow.appendChild(arrow);
+        }
+      });
+    }
+
+    function renderGraphFlow() {
+      graphFlow.innerHTML = graphNodes.map(node => {
+        const hide = activeFilter !== 'all' && !node.tags.includes(activeFilter);
+        const selected = selectedId === node.id ? 'selected' : '';
+        return `
+          <div class="graph-node ${selected} ${hide ? 'hidden' : ''}" data-id="${node.id}">
+            <small>${node.lane} · ${node.stage}</small>
+            <h4>${node.title}</h4>
+            <p>${node.short}</p>
+            <div class="tags" style="margin-top:10px;">${node.tags.map(t => `<span class="tag">${roleMap[t]?.label || t}</span>`).join('')}</div>
+          </div>
+        `;
+      }).join('');
+      graphFlow.querySelectorAll('.graph-node').forEach(el => {
+        el.addEventListener('click', () => {
+          selectedId = el.dataset.id;
+          renderAll();
+        });
+      });
+    }
+
+    function renderCollabFlow() {
+      collabFlow.innerHTML = collabLanes.map(lane => `
+        <section class="lane">
+          <div class="lane-head">
+            <div>
+              <h3>${lane.title}</h3>
+              <div class="panel-subtitle">${lane.desc}</div>
+            </div>
+          </div>
+          <div class="lane-body">
+            ${lane.cards.map(card => {
+              const hide = activeFilter !== 'all' && !card.tags.includes(activeFilter);
+              return `
+                <div class="lane-card ${selectedId === card.id ? 'selected' : ''} ${hide ? 'hidden' : ''}" data-id="${card.id}">
+                  <h4>${card.title}</h4>
+                  <p>${card.short}</p>
+                  <div class="tags" style="margin-top:10px;">${card.tags.map(t => `<span class="tag">${roleMap[t]?.label || t}</span>`).join('')}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>
+      `).join('');
+      collabFlow.querySelectorAll('.lane-card').forEach(el => {
+        el.addEventListener('click', () => {
+          selectedId = el.dataset.id;
+          renderAll();
+        });
+      });
+    }
+
+    function findNodeById(id) {
+      return businessNodes.find(n => n.id === id)
+        || graphNodes.find(n => n.id === id)
+        || collabLanes.flatMap(l => l.cards).find(n => n.id === id)
+        || businessNodes[0];
+    }
+
+    function viewLabel(id) {
+      if (businessNodes.find(n => n.id === id)) return '业务主链路';
+      if (graphNodes.find(n => n.id === id)) return 'Agent 编排';
+      return '系统协同';
+    }
+
+    function renderDetail() {
+      const node = findNodeById(selectedId);
+      detailEyebrow.textContent = `${viewLabel(node.id)} · 节点详情`;
+      detailTitle.textContent = node.title;
+      detailDesc.textContent = node.desc || node.short || '';
+      metricOwner.textContent = node.owner || '待补充';
+      metricOutput.textContent = node.output || '待补充';
+      metricStage.textContent = node.stage || '待补充';
+      detailNote.textContent = node.note || '该节点暂无补充说明。';
+
+      todoList.innerHTML = (node.todos || []).map(item => `<li>${item}</li>`).join('');
+      depList.innerHTML = (node.deps || []).map(item => `<li>${item}</li>`).join('');
+      outList.innerHTML = (node.outputs || []).map(item => `<li>${item}</li>`).join('');
+      riskList.innerHTML = (node.risks || []).map(item => `<li>${item}</li>`).join('');
+    }
+
+    function renderAll() {
+      renderBusinessFlow();
+      renderGraphFlow();
+      renderCollabFlow();
+      renderDetail();
+      buildLegend(businessLegend);
+      buildLegend(graphLegend);
+
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(`view-${activeView}`).classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === activeView));
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === activeFilter));
+
+      if (activeView === 'business') {
+        canvasTitle.textContent = '业务主链路';
+        canvasSubtitle.textContent = '从事件接入到反馈回流，适合老板快速理解核心链路和当前建设重点。';
+      } else if (activeView === 'graph') {
+        canvasTitle.textContent = 'Agent 编排视图';
+        canvasSubtitle.textContent = '对应 LangGraph / Stateful Graph 的节点、状态与条件分支，适合技术与产品团队对齐实现方式。';
+      } else {
+        canvasTitle.textContent = '系统协同视图';
+        canvasSubtitle.textContent = '展示 Agent 如何与现有 CDP、营销系统协同，而不是替代现有系统。';
+      }
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeView = btn.dataset.view;
+        if (activeView === 'business' && !businessNodes.find(n => n.id === selectedId)) selectedId = 'b1';
+        if (activeView === 'graph' && !graphNodes.find(n => n.id === selectedId)) selectedId = 'g1';
+        if (activeView === 'collab' && !collabLanes.flatMap(l => l.cards).find(n => n.id === selectedId)) selectedId = 'c1-2';
+        renderAll();
+      });
+    });
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeFilter = btn.dataset.filter;
+        renderAll();
+      });
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
