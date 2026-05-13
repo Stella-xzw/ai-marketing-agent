@@ -383,50 +383,98 @@
     }
 
     .event-lane {
-      position: relative;
-      background: linear-gradient(90deg, #eef2f7 0, #eef2f7 100%);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .window-card {
       border: 1px solid var(--line);
+      background: #f8fafc;
       border-radius: var(--radius);
-      min-height: 118px;
-      padding: 14px;
-      overflow: hidden;
-    }
-
-    .lane-line {
-      position: absolute;
-      left: 28px;
-      right: 28px;
-      top: 58px;
-      height: 3px;
-      background: #cbd5e1;
-    }
-
-    .event-dot {
-      position: absolute;
-      top: 45px;
-      transform: translateX(-50%);
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: var(--panel);
-      border: 3px solid var(--blue);
+      padding: 12px;
+      min-height: 172px;
       cursor: pointer;
+      text-align: left;
+      color: var(--ink);
+      transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
     }
 
-    .event-dot[data-type="strong"] { border-color: var(--green); }
-    .event-dot[data-type="medium"] { border-color: var(--amber); }
-    .event-dot[data-type="weak"] { border-color: #7b8aa0; }
-    .event-dot[data-type="pay"] { border-color: var(--purple); }
-    .event-dot[data-type="block"] { border-color: var(--red); }
+    .window-card.active {
+      border-color: var(--blue);
+      background: var(--blue-2);
+      box-shadow: 0 8px 20px rgba(13, 110, 253, .12);
+    }
 
-    .event-label {
-      position: absolute;
-      top: 78px;
-      transform: translateX(-50%);
-      width: 116px;
-      text-align: center;
+    .window-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .window-head strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .window-head span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .window-status {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #344054;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .window-events {
+      display: grid;
+      gap: 6px;
+    }
+
+    .event-chip {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e3e8f0;
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px 8px;
       font-size: 12px;
       color: #344054;
+    }
+
+    .event-chip::before {
+      content: attr(data-minute);
+      color: #667085;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .event-chip[data-type="strong"] { border-left: 4px solid var(--green); }
+    .event-chip[data-type="medium"] { border-left: 4px solid var(--amber); }
+    .event-chip[data-type="weak"] { border-left: 4px solid #7b8aa0; }
+    .event-chip[data-type="pay"] { border-left: 4px solid var(--purple); }
+    .event-chip[data-type="block"] { border-left: 4px solid var(--red); }
+
+    .event-empty {
+      border: 1px dashed #d5dce8;
+      border-radius: 8px;
+      padding: 10px;
+      color: #98a2b3;
+      font-size: 12px;
+      background: rgba(255,255,255,.7);
     }
 
     .sim-grid {
@@ -643,7 +691,7 @@
     @media (max-width: 980px) {
       .shell { padding: 14px; }
       .hero, .grid-2, .timeline { grid-template-columns: 1fr; }
-      .metric-grid, .sim-grid, .branch-grid, .state-grid { grid-template-columns: 1fr; }
+      .metric-grid, .sim-grid, .branch-grid, .state-grid, .event-lane { grid-template-columns: 1fr; }
       .section-title { align-items: start; flex-direction: column; }
       h1 { font-size: 24px; }
     }
@@ -978,6 +1026,13 @@
       ["F2 注册二次塞券", "非意图驱动", "in_app / push；home_popup / push_first_day_coupon", "3", "首次安卓端轨迹后 3 小时；与 S1 互斥"]
     ];
 
+    const windowDefs = [
+      { id: "0_3m", title: "0-3 分钟", range: "实时激活窗口", start: 0, end: 3 },
+      { id: "3_15m", title: "3-15 分钟", range: "首轮意图判断", start: 3, end: 15 },
+      { id: "15_60m", title: "15-60 分钟", range: "持续观察窗口", start: 15, end: 60 },
+      { id: "60_180m", title: "60-180 分钟", range: "首日收敛窗口", start: 60, end: 180 }
+    ];
+
     const simulations = [
       {
         id: "risk",
@@ -1135,21 +1190,78 @@
       renderSimStage(simulations[0].id);
     }
 
-    function renderSimStage(id) {
+    function renderSimStage(id, activeWindowId = "0_3m") {
       const sim = simulations.find(s => s.id === id);
       const lane = document.getElementById("eventLane");
-      const max = 180;
-      lane.innerHTML = `<div class="lane-line"></div>` + sim.events.map(event => {
-        const left = 28 + (event.minute / max) * (100 - 8);
+      lane.innerHTML = windowDefs.map(windowDef => {
+        const events = sim.events.filter(event => {
+          const isLast = windowDef.id === "60_180m";
+          return event.minute >= windowDef.start && (isLast ? event.minute <= windowDef.end : event.minute < windowDef.end);
+        });
+        const eventHtml = events.length
+          ? events.map(event => `<div class="event-chip" data-type="${event.type}" data-minute="${event.minute}m">${event.label}</div>`).join("")
+          : `<div class="event-empty">本窗口无新增关键行为，继承前序累计状态。</div>`;
         return `
-          <div class="event-dot" data-type="${event.type}" style="left:${left}%;" title="${event.minute} 分钟：${event.label}"></div>
-          <div class="event-label" style="left:${left}%;">${event.minute}m<br>${event.label}</div>
+          <button class="window-card ${windowDef.id === activeWindowId ? "active" : ""}" data-window="${windowDef.id}">
+            <div class="window-head">
+              <div><strong>${windowDef.title}</strong><span>${windowDef.range}</span></div>
+              <span class="window-status">${events.length ? `${events.length} 个事件` : "无新增"}</span>
+            </div>
+            <div class="window-events">${eventHtml}</div>
+          </button>
         `;
       }).join("");
+      lane.querySelectorAll(".window-card").forEach(btn => {
+        btn.addEventListener("click", () => renderSimStage(sim.id, btn.dataset.window));
+      });
+
+      const activeWindow = windowDefs.find(windowDef => windowDef.id === activeWindowId);
+      const windowEvents = sim.events.filter(event => {
+        const isLast = activeWindow.id === "60_180m";
+        return event.minute >= activeWindow.start && (isLast ? event.minute <= activeWindow.end : event.minute < activeWindow.end);
+      });
       const cards = document.getElementById("simCards");
-      cards.innerHTML = sim.cards.map(card => `
+      cards.innerHTML = buildWindowCards(sim, activeWindow, windowEvents).map(card => `
         <div class="sim-card"><h4>${card[0]}</h4><p>${card[1]}</p></div>
       `).join("");
+    }
+
+    function buildWindowCards(sim, windowDef, events) {
+      const eventNames = events.map(event => event.label).join("、") || "无新增关键行为";
+      const baseInput = `${windowDef.title}窗口事件：${eventNames}。`;
+      const copies = {
+        risk: {
+          "0_3m": ["弱搜索信号进入累计序列；尚不足以单独确认风险尽调。", "可生成 weak evidence，不触发高意图策略。", "F1 可按独立策略执行；Agent 策略继续等待后续窗口。"],
+          "3_15m": ["风险扫描和风险详情形成 strong evidence。", "LLM 输出 risk_due_diligence=high，系统选择器确认主意图。", "匹配 S1、S2；按优先级推进 S1，支付/互斥/频控通过后下发通知。"],
+          "15_60m": ["本窗口无新增时复用截止当前窗口累计摘要。", "若前序已触达，进入频控或互斥判断。", "不重复生成同一策略同一触点任务。"],
+          "60_180m": ["首日后段只处理新增强证据或承接回执。", "若已支付或已触达完成，窗口状态终止。", "保留回放记录，不扩大策略范围。"]
+        },
+        package: {
+          "0_3m": ["首次轨迹进入窗口，会员相关信号尚未出现。", "若仅弱行为，意图保持低置信或等待。", "F1 可独立执行；Agent 策略不强行触达。"],
+          "3_15m": ["会员中心、套餐对比、付费弹框形成套餐比较证据。", "LLM 输出 package_compare，evidence 引用会员路径行为。", "匹配 S3/S4；同优先级可并行进入规则校验。"],
+          "15_60m": ["若仍未支付，继续使用累计套餐证据判断。", "频控按策略分别计算，互斥组阻止冲突策略。", "通过则下发对应策略和触点任务。"],
+          "60_180m": ["后段重点接收订单变化和执行回执。", "若支付成功，终止后续营销链路。", "未支付但频控已满则不再触达。"]
+        },
+        low: {
+          "0_3m": ["首页浏览、搜索结果属于弱信号。", "LLM 可输出 low_intent_explore 或低置信业务意图。", "兜底意图不等于强制触达，需继续过策略和规则校验。"],
+          "3_15m": ["累计仍缺少中/强业务证据。", "系统选择器优先避免低意图覆盖强业务意图；本例无强业务意图。", "按业务提供的策略绑定表匹配低意图策略。"],
+          "15_60m": ["若无新增行为，窗口仅记录累计状态。", "可进入频控、互斥、触点可用性校验。", "触点不可用或频控命中时不触达。"],
+          "60_180m": ["若长期无有效行为，可进入沉默类判断。", "S5/S6 是否执行必须以策略表和互斥组为准。", "最终结果写入回放表。"]
+        },
+        converted: {
+          "0_3m": ["首次轨迹入窗，暂未发现支付。", "可建立 current_state 和输入快照。", "独立策略是否执行取决于前置查单结果。"],
+          "3_15m": ["支付成功事件在窗口内出现。", "订单状态显示 has_effective_vip_svip_paid=true。", "系统直接写 already_converted，不调用 LLM，不生成 Agent 通知任务。"],
+          "15_60m": ["已完成用户继续保持终止状态。", "后续窗口不再做意图识别和策略排序。", "仅保留订单和回执回放。"],
+          "60_180m": ["首日后段不再营销。", "如有迟到事件，只进入日志和回放。", "state_status=completed。"]
+        }
+      };
+      const [summary, decision, result] = copies[sim.id][windowDef.id];
+      return [
+        ["窗口输入", baseInput],
+        ["摘要 / Evidence", summary],
+        ["意图与策略", decision],
+        ["输出 / 终止", result]
+      ];
     }
 
     function renderStrategies() {
