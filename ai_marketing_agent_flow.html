@@ -1,0 +1,1195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>当天新注册用户 AI 营销 Agent 一期流程图</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-2: #f9fafc;
+      --ink: #18202b;
+      --muted: #667085;
+      --line: #d8dee8;
+      --blue: #2563eb;
+      --blue-2: #e8f0ff;
+      --green: #11845b;
+      --green-2: #e7f7ef;
+      --amber: #b7791f;
+      --amber-2: #fff4dd;
+      --red: #c43b3b;
+      --red-2: #ffecec;
+      --purple: #6842c2;
+      --purple-2: #f0ebff;
+      --shadow: 0 18px 45px rgba(31, 45, 61, 0.10);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.55;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    .shell {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(360px, 0.6fr);
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .hero-main, .hero-side, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 24px;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 980px;
+    }
+
+    .hero-side {
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      border-radius: var(--radius);
+      padding: 12px;
+      min-height: 74px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 8px 24px rgba(31, 45, 61, 0.08);
+      margin-bottom: 18px;
+    }
+
+    .nav button {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .nav button.active {
+      background: var(--blue-2);
+      color: var(--blue);
+      border-color: #bfd2ff;
+      font-weight: 700;
+    }
+
+    .section {
+      display: none;
+      margin-bottom: 18px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 18px 0 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(360px, 0.7fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 16px;
+    }
+
+    .flow-wrap {
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .flow {
+      min-width: 1080px;
+      display: grid;
+      grid-template-columns: repeat(9, minmax(112px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .flow-node {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 12px;
+      min-height: 154px;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+      position: relative;
+    }
+
+    .flow-node:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(31, 45, 61, 0.12);
+      border-color: #aab8cf;
+    }
+
+    .flow-node.active {
+      border-color: var(--blue);
+      background: var(--blue-2);
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.14);
+    }
+
+    .flow-node:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      width: 10px;
+      height: 2px;
+      background: var(--line);
+    }
+
+    .node-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .flow-node h3, .detail h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .flow-node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #eef2f7;
+      color: #344054;
+      border: 1px solid #d9e0ea;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .chip.blue { background: var(--blue-2); color: var(--blue); border-color: #bfd2ff; }
+    .chip.green { background: var(--green-2); color: var(--green); border-color: #bde8d0; }
+    .chip.amber { background: var(--amber-2); color: var(--amber); border-color: #ffe0a3; }
+    .chip.red { background: var(--red-2); color: var(--red); border-color: #ffcaca; }
+    .chip.purple { background: var(--purple-2); color: var(--purple); border-color: #d7ccff; }
+
+    .detail {
+      min-height: 440px;
+    }
+
+    .detail-title {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .detail-title .badge {
+      background: var(--blue);
+      color: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .detail-section {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .detail-section h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #344054;
+    }
+
+    ul.clean {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    ul.clean li {
+      margin: 4px 0;
+    }
+
+    .code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: #f2f4f7;
+      border: 1px solid #d9e0ea;
+      border-radius: 6px;
+      padding: 2px 5px;
+      font-size: 12px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .sim-controls {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sim-btn {
+      text-align: left;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 12px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+
+    .sim-btn.active {
+      border-color: var(--blue);
+      background: var(--blue-2);
+    }
+
+    .sim-btn strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .sim-btn span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sim-stage {
+      display: grid;
+      gap: 12px;
+    }
+
+    .event-lane {
+      position: relative;
+      background: linear-gradient(90deg, #eef2f7 0, #eef2f7 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      min-height: 118px;
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .lane-line {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      top: 58px;
+      height: 3px;
+      background: #cbd5e1;
+    }
+
+    .event-dot {
+      position: absolute;
+      top: 45px;
+      transform: translateX(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 3px solid var(--blue);
+      cursor: pointer;
+    }
+
+    .event-dot[data-type="strong"] { border-color: var(--green); }
+    .event-dot[data-type="medium"] { border-color: var(--amber); }
+    .event-dot[data-type="weak"] { border-color: #7b8aa0; }
+    .event-dot[data-type="pay"] { border-color: var(--purple); }
+    .event-dot[data-type="block"] { border-color: var(--red); }
+
+    .event-label {
+      position: absolute;
+      top: 78px;
+      transform: translateX(-50%);
+      width: 116px;
+      text-align: center;
+      font-size: 12px;
+      color: #344054;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .sim-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .sim-card h4 {
+      margin: 0 0 6px;
+      font-size: 13px;
+    }
+
+    .sim-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: var(--panel);
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: #344054;
+      background: var(--panel-2);
+      font-weight: 700;
+    }
+
+    .branch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .branch-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: var(--panel);
+      min-height: 190px;
+    }
+
+    .branch-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .branch-card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .branch-card.stop { border-color: #ffcaca; background: #fffafa; }
+    .branch-card.warn { border-color: #ffe0a3; background: #fffaf0; }
+    .branch-card.pass { border-color: #bde8d0; background: #f7fffb; }
+
+    .accordion {
+      display: grid;
+      gap: 8px;
+    }
+
+    .acc-item {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .acc-head {
+      width: 100%;
+      border: 0;
+      background: var(--panel);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      color: var(--ink);
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .acc-body {
+      display: none;
+      padding: 0 14px 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .acc-item.open .acc-body {
+      display: block;
+    }
+
+    .state-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .state-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .state-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .state-card .state-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .state-row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 8px;
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+    }
+
+    .state-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .state-row strong {
+      color: #344054;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      color: var(--blue);
+      border-color: #bfd2ff;
+      background: var(--blue-2);
+      font-weight: 700;
+    }
+
+    .risk-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .risk-item {
+      border-left: 4px solid var(--amber);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .risk-item[data-level="high"] { border-left-color: var(--red); }
+    .risk-item[data-level="medium"] { border-left-color: var(--amber); }
+    .risk-item[data-level="low"] { border-left-color: var(--blue); }
+
+    .risk-item h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .risk-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      padding: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .shell { padding: 14px; }
+      .hero, .grid-2, .timeline { grid-template-columns: 1fr; }
+      .metric-grid, .sim-grid, .branch-grid, .state-grid { grid-template-columns: 1fr; }
+      .section-title { align-items: start; flex-direction: column; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">PRD 可交互讲解页 · 单文件 HTML</div>
+        <h1>企查查当天新注册用户 AI 营销 Agent 一期</h1>
+        <p class="lead">从安卓 APP 轨迹进入 Kafka 开始，按首次安卓端轨迹发生时间划分 0-180 分钟窗口，完成输入整理、结构化摘要、意图识别、策略排序、规则校验、通知下发、执行回执与回放。页面支持点击每个系统节点查看输入、输出、目标、状态和异常分支。</p>
+        <div class="chip-row">
+          <span class="chip blue">窗口锚点：first_android_event_time</span>
+          <span class="chip green">LLM 只输出摘要与候选意图</span>
+          <span class="chip amber">策略固定：S1-S6 + F1/F2</span>
+          <span class="chip purple">通知最小字段：4 个</span>
+          <span class="chip red">不包含：曝光点击效果事件</span>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <div class="metric-grid">
+          <div class="metric"><strong>4</strong><span>固定观察窗口</span></div>
+          <div class="metric"><strong>180m</strong><span>首次安卓轨迹后观察期</span></div>
+          <div class="metric"><strong>6+2</strong><span>Agent 策略 + 独立策略</span></div>
+          <div class="metric"><strong>3</strong><span>最多候选意图</span></div>
+        </div>
+        <div class="metric">
+          <strong>讲解目标</strong>
+          <span>让研发明确每个节点为什么存在、吃什么输入、吐什么输出、如何终止、如何拦截、如何回放。</span>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="nav" aria-label="页面导航">
+      <button class="active" data-tab="overview">总览流程</button>
+      <button data-tab="simulation">真实轨迹模拟</button>
+      <button data-tab="strategy">意图与策略</button>
+      <button data-tab="states">状态与异常</button>
+      <button data-tab="handoff">通知协议</button>
+      <button data-tab="risks">待确认项</button>
+    </nav>
+
+    <section id="overview" class="section active">
+      <div class="section-title">
+        <div>
+          <h2>总览流程</h2>
+          <div class="hint">点击流程节点，右侧会显示该节点的背景、输入、输出、规则和失败分支。</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel flow-wrap">
+          <div id="flow" class="flow"></div>
+        </div>
+        <aside id="nodeDetail" class="panel detail"></aside>
+      </div>
+    </section>
+
+    <section id="simulation" class="section">
+      <div class="section-title">
+        <div>
+          <h2>真实用户轨迹模拟</h2>
+          <div class="hint">模拟一个注册当天用户从 Kafka 轨迹进入 Agent 判断，并在不同窗口产生策略结果。</div>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="panel sim-controls" id="simControls"></div>
+        <div class="panel sim-stage">
+          <div id="eventLane" class="event-lane"></div>
+          <div id="simCards" class="sim-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy" class="section">
+      <div class="section-title">
+        <div>
+          <h2>意图、证据与策略选择</h2>
+          <div class="hint">展示 LLM 候选意图、系统选择器、固定策略池和规则校验之间的边界。</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>系统选择器如何选主意图</h3>
+          <table>
+            <thead>
+              <tr><th>排序因子</th><th>规则</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="code">confidence_rank</span></td><td>high=3, medium=2, low=1</td><td>来自 LLM 候选输出，经系统一致性校验和必要降级后使用。</td></tr>
+              <tr><td>证据强度</td><td>strong &gt; medium &gt; weak</td><td>取候选引用的有效 evidence 中最高强度。</td></tr>
+              <tr><td>证据数量</td><td>多 &gt; 少</td><td>仅统计能映射到该候选意图的 evidence。</td></tr>
+              <tr><td>业务优先级</td><td>套餐 &gt; 风险 &gt; 拓客 &gt; 关系 &gt; 标讯 &gt; 企业核验 &gt; 低意图</td><td>保证同一输入稳定可复现。</td></tr>
+              <tr><td>最近强证据</td><td>minute 越大越近</td><td>仅在双方都有强 evidence 且前序因子相同时使用。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <h3>策略池匹配原则</h3>
+          <ul class="clean">
+            <li>策略节点只消费 <span class="code">selected_intent</span>，不得直接消费 LLM 候选数组。</li>
+            <li>策略只从固定 S1-S6 中匹配；F1/F2 是独立策略，不经过意图识别。</li>
+            <li>同优先级策略同时进入规则校验，不按 strategy_id 二选一。</li>
+            <li>同一策略多渠道或多触点按 <span class="code">strategy_binding_id</span> 展开，不做笛卡尔积。</li>
+            <li>最终是否触达由规则校验和承接系统执行结果决定。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <h3>固定策略池</h3>
+        <table>
+          <thead>
+            <tr><th>策略</th><th>适用意图</th><th>渠道/触点</th><th>优先级</th><th>关键约束</th></tr>
+          </thead>
+          <tbody id="strategyTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="states" class="section">
+      <div class="section-title">
+        <div>
+          <h2>状态、终止与异常分支</h2>
+          <div class="hint">说明什么情况下不触达、终止链路、进入异常、频控、互斥或回放。</div>
+        </div>
+      </div>
+      <div class="branch-grid">
+        <div class="branch-card stop">
+          <h3>终止链路</h3>
+          <p>已完成有效 VIP/SVIP 支付，或订单回补支付成功。</p>
+          <div class="chip-row"><span class="chip red">state_status=completed</span><span class="chip">selected_intent=already_converted</span></div>
+          <ul class="clean"><li>不调用 LLM</li><li>不进入策略节点</li><li>不提交通知</li></ul>
+        </div>
+        <div class="branch-card warn">
+          <h3>不触达</h3>
+          <p>策略匹配不等于触达。全部任务被规则校验拦截，窗口级结果为 not_triggered。</p>
+          <div class="chip-row"><span class="chip amber">frequency_limit_hit</span><span class="chip amber">mutex_with_second_coupon</span></div>
+          <ul class="clean"><li>保留策略和任务快照</li><li>按任务粒度记录原因</li><li>不切换到低优先级策略</li></ul>
+        </div>
+        <div class="branch-card pass">
+          <h3>成功触达</h3>
+          <p>至少一条 notification_task 通过规则校验并进入通知提交。</p>
+          <div class="chip-row"><span class="chip green">strategy_trigger_status=triggered</span><span class="chip green">execution_status=success</span></div>
+          <ul class="clean"><li>下发最小执行指令</li><li>回执按 notification_task_id 归并</li><li>写入回放记录</li></ul>
+        </div>
+      </div>
+      <div class="state-grid" style="margin-top:16px;">
+        <div class="state-card">
+          <h3>current_state</h3>
+          <div class="state-list">
+            <div class="state-row"><strong>用途</strong><span>单用户首日链路最新状态。</span></div>
+            <div class="state-row"><strong>关键字段</strong><span>first_android_event_time, current_window_type, state_status, expire_time。</span></div>
+            <div class="state-row"><strong>终态</strong><span>completed / expired / failed。</span></div>
+          </div>
+        </div>
+        <div class="state-card">
+          <h3>tick_state</h3>
+          <div class="state-list">
+            <div class="state-row"><strong>用途</strong><span>每次窗口判断的关键决策快照。</span></div>
+            <div class="state-row"><strong>包含</strong><span>输入引用、摘要状态、主意图、选中策略、触达状态。</span></div>
+            <div class="state-row"><strong>不包含</strong><span>曝光、点击、支付归因等效果事件。</span></div>
+          </div>
+        </div>
+        <div class="state-card">
+          <h3>notification_task_state</h3>
+          <div class="state-list">
+            <div class="state-row"><strong>用途</strong><span>任务级规则校验、通知提交、执行回执。</span></div>
+            <div class="state-row"><strong>粒度</strong><span>notification_task_id。</span></div>
+            <div class="state-row"><strong>频控</strong><span>按任务状态和回放查询，不维护 recent_touch_history。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="handoff" class="section">
+      <div class="section-title">
+        <div>
+          <h2>Agent 与业务系统交互</h2>
+          <div class="hint">7.7 通知协议被压缩为最小执行指令和最小执行回执。</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Agent 下发字段</h3>
+          <table>
+            <thead><tr><th>字段</th><th>是否必填</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><span class="code">notification_task_id</span></td><td>是</td><td>通知任务 ID，用于幂等执行和回执归并。</td></tr>
+              <tr><td><span class="code">user_id</span></td><td>是</td><td>目标用户。</td></tr>
+              <tr><td><span class="code">strategy_id</span></td><td>是</td><td>S1-S6 / F1-F2。</td></tr>
+              <tr><td><span class="code">strategy_binding_id</span></td><td>是</td><td>唯一表示策略、渠道和触点组合。</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">Agent 不下发窗口信息、意图信息、排序原因或大模型说明。承接系统通过 strategy_binding_id 读取模板、文案、权益、落地页或站内动作。</p>
+        </div>
+        <div class="panel">
+          <h3>承接系统回执字段</h3>
+          <table>
+            <thead><tr><th>字段</th><th>是否必填</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><span class="code">notification_task_id</span></td><td>是</td><td>用于归并对应任务。</td></tr>
+              <tr><td><span class="code">execution_status</span></td><td>是</td><td>success / failed / ignored。</td></tr>
+              <tr><td><span class="code">execution_fail_reason</span></td><td>失败必填</td><td>仅 failed 时必填。</td></tr>
+            </tbody>
+          </table>
+          <p class="hint">回执不承载曝光、点击、关闭、到达、支付、投诉等效果事件。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="risks" class="section">
+      <div class="section-title">
+        <div>
+          <h2>当前待确认项与潜在逻辑风险</h2>
+          <div class="hint">基于当前 PRD 提炼，供研发评审时逐项确认。</div>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="high">高优先级</button>
+        <button class="filter-btn" data-filter="medium">中优先级</button>
+        <button class="filter-btn" data-filter="low">低优先级</button>
+      </div>
+      <div id="riskList" class="risk-list"></div>
+    </section>
+
+    <div class="footer-note">生成文件：ai_marketing_agent_flow.html。页面为本地单文件，不依赖 CDN、图片或外部库。</div>
+  </div>
+
+  <script>
+    const nodes = [
+      {
+        id: "kafka",
+        title: "Kafka 轨迹接入",
+        desc: "安卓 APP 行为事件进入 Kafka，被消费后进入输入整理。",
+        goal: "把原始轨迹变成可归一化、可去重、可入窗口的事件集合。",
+        input: ["安卓 APP 埋点：page_view、page_exposure、button_click 等", "event_id、event_time、event_name、attr", "订单、优惠券、触达回执按用户关联"],
+        output: ["用户维度事件流", "first_android_event_time", "原始事件引用"],
+        rules: ["first_android_event_time 是窗口唯一锚点", "事件时间早于锚点标记 event_before_first_android_event", "超过 180 分钟只入日志/回放"],
+        fail: ["缺 user_id 或 first_android_event_time：链路 failed", "缺 event_time：不进入窗口判断", "未命中准入表：不进入 signal_totals"]
+      },
+      {
+        id: "input",
+        title: "输入整理",
+        desc: "字段映射、事件去重、准入表匹配、标准信号生成。",
+        goal: "把不稳定的原始 JSON 变成标准 context 输入。",
+        input: ["Kafka 原始事件", "订单状态字段", "优惠券资源字段", "触达回执"],
+        output: ["standard_signal", "signal_totals", "data_quality_flags", "order_status"],
+        rules: ["按事件名称 + 关键属性 + 属性值匹配事件映射准入表", "一个原始事件最多命中一个标准业务信号", "订单状态 unknown 不得默认为未支付"],
+        fail: ["order_status_unknown：本窗口不进大模型、不进策略、不触达", "duplicate_event：按 event_id 去重", "late_event：顺延或只入回放"]
+      },
+      {
+        id: "window",
+        title: "决策窗口",
+        desc: "按首次安卓端轨迹后 0-180 分钟划分 4 个窗口。",
+        goal: "在窗口结束点统一触发判断，避免每个事件都触发策略。",
+        input: ["first_android_event_time", "窗口配置", "当前窗口事件集合", "累计标准信号"],
+        output: ["window_type", "tick_id", "tick_time", "tick_state"],
+        rules: ["0_3m [0,3)", "3_15m [3,15)", "15_60m [15,60)", "60_180m [60,180]", "只做窗口结束触发，不做关键事件增量触发"],
+        fail: ["窗口重复触发：window_trigger_dedup_key 去重", "已完成窗口不重算", "迟到事件按 8.2.10 顺延"]
+      },
+      {
+        id: "summary",
+        title: "结构化摘要",
+        desc: "LLM 输出 window_summary、behavior_sequence 和 evidence。",
+        goal: "把窗口行为压缩成可解释、可校验的意图识别输入。",
+        input: ["当前窗口准入事件", "累计准入事件", "标准信号、业务类别、信号强度"],
+        output: ["window_summary.current_window", "window_summary.cumulative_to_window", "behavior_sequence", "evidence"],
+        rules: ["LLM 不得新增 event_id 或标准信号", "behavior_sequence 包含 sequence_index 判断行为延续", "Evidence 只保留 evidence_id、event_id、minute、signal、signal_strength、reason"],
+        fail: ["非法 JSON：summary_status=failed", "引用不存在事件：剔除或失败", "强信号存在但 evidence 为空：失败"]
+      },
+      {
+        id: "intent",
+        title: "意图识别",
+        desc: "LLM 输出 1-3 个候选意图，系统选择器生成唯一主意图。",
+        goal: "让 LLM 做理解，让代码做确定性裁决。",
+        input: ["window_summary", "behavior_sequence", "evidence", "signal_intent_hints"],
+        output: ["intent_candidates", "selected_intent", "confidence", "intent_fallback_reason"],
+        rules: ["LLM 不输出策略、发券、渠道、触点", "supporting_evidence_ids 必须引用已有 evidence", "系统按 confidence、证据强度、证据数量、业务优先级排序"],
+        fail: ["LLM 超时/非法输出：low_intent_explore", "无有效 evidence：low_intent_explore", "已支付：already_converted 并终止"]
+      },
+      {
+        id: "strategy",
+        title: "策略排序",
+        desc: "从固定 S1-S6 中按 selected_intent 匹配并排序。",
+        goal: "输出待规则校验的 selected_strategies 和 notification_tasks。",
+        input: ["selected_intent", "固定策略池 S1-S6", "策略绑定配置"],
+        output: ["strategy_candidates", "selected_strategies", "notification_tasks", "strategy_match_status"],
+        rules: ["同优先级策略并行进入规则校验", "不在排序阶段判断频控、互斥、渠道/触点可用性", "按 strategy_binding_id 展开任务，不做笛卡尔积"],
+        fail: ["not_matched 只作为配置异常", "不得切换到其他低优先级策略", "低意图是否触达仍由规则校验决定"]
+      },
+      {
+        id: "rule",
+        title: "规则校验",
+        desc: "按任务粒度校验支付、频控、互斥、渠道/触点可用性。",
+        goal: "决定每条 notification_task 是否可提交。",
+        input: ["notification_tasks", "订单状态", "notification_task_state", "independent_strategy_execution_state", "策略绑定配置"],
+        output: ["rule_check_status", "block_reason_code", "strategy_trigger_status"],
+        rules: ["同策略频控按策略独立判断", "S1/F2 在 0-180 分钟互斥", "提交前二次查询支付状态", "触达历史从任务状态/回放查询，不维护 recent_touch_history"],
+        fail: ["frequency_limit_hit", "mutex_with_second_coupon", "already_converted", "strategy_not_available", "channel_not_available"]
+      },
+      {
+        id: "notify",
+        title: "通知下发",
+        desc: "Agent 向业务系统/营销系统下发最小执行指令。",
+        goal: "只告诉外部系统哪个用户执行哪个已配置策略。",
+        input: ["通过规则校验的 notification_task", "notification_task_id", "user_id", "strategy_id", "strategy_binding_id"],
+        output: ["通知提交状态", "任务级幂等键", "notification_task_state"],
+        rules: ["Agent 不生成营销文案", "承接系统按 strategy_binding_id 读取配置", "同一策略多渠道/触点任务独立提交"],
+        fail: ["提交失败：notification_submit_status=failed", "配置找不到：承接系统回 failed + 原因", "重复提交：按 notification_task_id 幂等"]
+      },
+      {
+        id: "receipt",
+        title: "执行回执与回放",
+        desc: "承接系统回传执行状态，Agent 归并到任务和回放。",
+        goal: "支持查询为什么触达、为什么不触达、执行结果是什么。",
+        input: ["notification_task_id", "execution_status", "execution_fail_reason"],
+        output: ["execution_snapshot", "agent_replay_log", "可查询回放"],
+        rules: ["回执不承载效果事件", "ignored 不占用最终频控和互斥", "按 notification_task_id 归并，重复回执不得重复统计"],
+        fail: ["缺 notification_task_id：无法归并", "failed 缺原因：质量标记", "乱序回执：按任务 ID 归并"]
+      }
+    ];
+
+    const strategies = [
+      ["S1 高潜人群付费挽留", "risk_due_diligence / relationship_penetration / bid_opportunity / business_lead_generation / enterprise_verification", "in_app / push；home_popup / push_first_day_intent", "2", "当日 1 次；与 F2 互斥"],
+      ["S2 企业维度数据价值强化", "risk_due_diligence / relationship_penetration / bid_opportunity / business_lead_generation / enterprise_verification / low_intent_explore", "in_app；home_popup / enterprise_page", "4", "首页 1 次，企业主页 1 次"],
+      ["S3 减少人员主页付费曝光", "package_compare / low_intent_explore", "in_app；person_page", "4", "注册当日持续生效"],
+      ["S4 缩短付费路径", "package_compare / low_intent_explore", "in_app；member_center", "4", "命中后至注册 30 天"],
+      ["S5 新手引导专题页", "low_intent_explore", "in_app / push；home_popup / push_first_day_intent", "5", "注册当日 1 次"],
+      ["S6 注册后沉默唤醒", "low_intent_explore", "push；push_silent_wakeup", "5", "注册当日 1 次，注册次日 1 次"],
+      ["F1 注册实时塞券", "非意图驱动", "in_app / push；home_popup / push_first_day_general", "1", "首次安卓端轨迹后立即触发"],
+      ["F2 注册二次塞券", "非意图驱动", "in_app / push；home_popup / push_first_day_coupon", "3", "首次安卓端轨迹后 3 小时；与 S1 互斥"]
+    ];
+
+    const simulations = [
+      {
+        id: "risk",
+        title: "高意图风险尽调用户",
+        desc: "注册后先搜索企业，再点击风险扫描和风险详情。",
+        events: [
+          { minute: 0, label: "首次安卓轨迹", type: "weak" },
+          { minute: 2, label: "企业搜索", type: "weak" },
+          { minute: 8, label: "风险扫描", type: "strong" },
+          { minute: 11, label: "风险详情", type: "strong" },
+          { minute: 15, label: "窗口判断", type: "pay" }
+        ],
+        cards: [
+          ["输入", "risk_scan_click、risk_detail_view 进入 evidence。"],
+          ["意图", "LLM 输出 risk_due_diligence high，系统选择器确认主意图。"],
+          ["策略", "匹配 S1、S2；按优先级选 S1 进入规则校验。"],
+          ["结果", "若未支付且未命中 F2 互斥，生成通知任务。"]
+        ]
+      },
+      {
+        id: "package",
+        title: "会员套餐比较用户",
+        desc: "用户连续访问会员中心、套餐页、付费弹框但未支付。",
+        events: [
+          { minute: 0, label: "首次安卓轨迹", type: "weak" },
+          { minute: 4, label: "会员中心", type: "strong" },
+          { minute: 6, label: "套餐对比", type: "medium" },
+          { minute: 10, label: "付费弹框", type: "strong" },
+          { minute: 15, label: "窗口判断", type: "pay" }
+        ],
+        cards: [
+          ["输入", "member_center_view、member_paywall_exposed。"],
+          ["意图", "selected_intent=package_compare。"],
+          ["策略", "匹配 S3/S4，同优先级时并行进入规则校验。"],
+          ["结果", "若付费路径触点可用，通知任务进入承接系统。"]
+        ]
+      },
+      {
+        id: "low",
+        title: "低意图泛浏览用户",
+        desc: "用户只浏览首页和搜索结果，没有强业务证据。",
+        events: [
+          { minute: 0, label: "首次安卓轨迹", type: "weak" },
+          { minute: 1, label: "首页浏览", type: "weak" },
+          { minute: 2, label: "搜索结果", type: "weak" },
+          { minute: 3, label: "0_3m 判断", type: "pay" },
+          { minute: 15, label: "3_15m 判断", type: "pay" }
+        ],
+        cards: [
+          ["输入", "弱信号，evidence 不足以支撑明确业务意图。"],
+          ["意图", "selected_intent=low_intent_explore。"],
+          ["策略", "按策略池匹配 S2/S3/S4/S5/S6，再按优先级排序。"],
+          ["结果", "兜底意图不等于强制触达，最终由规则校验决定。"]
+        ]
+      },
+      {
+        id: "converted",
+        title: "已支付用户",
+        desc: "窗口判断前订单状态显示用户已有效支付。",
+        events: [
+          { minute: 0, label: "首次安卓轨迹", type: "weak" },
+          { minute: 5, label: "会员中心", type: "strong" },
+          { minute: 9, label: "支付成功", type: "pay" },
+          { minute: 15, label: "前置查单", type: "block" }
+        ],
+        cards: [
+          ["输入", "order_status.has_effective_vip_svip_paid=true。"],
+          ["意图", "系统直接写 already_converted，不调用 LLM。"],
+          ["策略", "不进入策略节点，不生成 notification_tasks。"],
+          ["结果", "state_status=completed，终止后续窗口。"]
+        ]
+      }
+    ];
+
+    const risks = [
+      { level: "high", title: "Kafka 消费到窗口触发的工程方案需确认", text: "MVP 建议采用 Kafka 消费入库 + 状态表 + 到期扫描。若直接用流式窗口，需要明确乱序、迟到、重放和状态恢复策略。" },
+      { level: "high", title: "first_android_event_time 的生成口径需固化", text: "需要确认哪些安卓端事件可作为首次轨迹，是否排除后台启动、心跳、SDK 初始化类事件。" },
+      { level: "high", title: "策略绑定表是策略匹配的单一真相源", text: "意图与策略匹配关系必须严格按业务提供表格，不应在低意图或触点条件中另写一套选择逻辑。" },
+      { level: "medium", title: "LLM 摘要和意图识别的 JSON Schema 需要落地", text: "PRD 已定义字段，但研发需要 schema、additionalProperties=false、枚举校验和 evidence 引用校验。" },
+      { level: "medium", title: "ignored 的频控归并口径需要业务确认", text: "当前口径是 ignored 不占用最终频控和互斥，但保留回放。需确认外部系统实时资格不满足时是否都用 ignored。" },
+      { level: "medium", title: "通知接口是否拆分仍待联调", text: "Agent 窗口策略和 F1/F2 独立策略是否共用同一入口，影响接口设计和回放字段映射。" },
+      { level: "medium", title: "效果事件不进入 Agent 回执，但归因仍需外部方案", text: "点击、曝光、回流、支付等指标应通过 notification_task_id 外部关联；无法关联时需要兜底规则。" },
+      { level: "low", title: "短信为预留渠道", text: "策略、规则、通知和验收中不启用 sms，避免研发误接入。" },
+      { level: "low", title: "固定回归样本需要补齐", text: "应覆盖八类 intent、四个窗口、LLM 异常兜底、已支付终止、迟到事件、频控互斥和多渠道幂等。" }
+    ];
+
+    const navButtons = Array.from(document.querySelectorAll(".nav button"));
+    const sections = Array.from(document.querySelectorAll(".section"));
+    navButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        navButtons.forEach(b => b.classList.remove("active"));
+        sections.forEach(s => s.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    function renderFlow() {
+      const flow = document.getElementById("flow");
+      flow.innerHTML = nodes.map((node, index) => `
+        <button class="flow-node ${index === 0 ? "active" : ""}" data-node="${node.id}">
+          <span class="node-index">${index + 1}</span>
+          <h3>${node.title}</h3>
+          <p>${node.desc}</p>
+          <div class="chip-row">
+            ${index < 3 ? '<span class="chip blue">输入层</span>' : ''}
+            ${index >= 3 && index <= 5 ? '<span class="chip purple">AI/策略层</span>' : ''}
+            ${index >= 6 ? '<span class="chip green">执行层</span>' : ''}
+          </div>
+        </button>
+      `).join("");
+      flow.querySelectorAll(".flow-node").forEach(btn => {
+        btn.addEventListener("click", () => {
+          flow.querySelectorAll(".flow-node").forEach(n => n.classList.remove("active"));
+          btn.classList.add("active");
+          renderNodeDetail(btn.dataset.node);
+        });
+      });
+      renderNodeDetail(nodes[0].id);
+    }
+
+    function list(items) {
+      return `<ul class="clean">${items.map(item => `<li>${item}</li>`).join("")}</ul>`;
+    }
+
+    function renderNodeDetail(id) {
+      const node = nodes.find(n => n.id === id);
+      const detail = document.getElementById("nodeDetail");
+      detail.innerHTML = `
+        <div class="detail-title"><span class="badge">节点详情</span><h3>${node.title}</h3></div>
+        <p class="hint">${node.desc}</p>
+        <div class="detail-section"><h4>目标</h4>${list([node.goal])}</div>
+        <div class="detail-section"><h4>输入</h4>${list(node.input)}</div>
+        <div class="detail-section"><h4>输出</h4>${list(node.output)}</div>
+        <div class="detail-section"><h4>核心规则</h4>${list(node.rules)}</div>
+        <div class="detail-section"><h4>异常 / 不触达分支</h4>${list(node.fail)}</div>
+      `;
+    }
+
+    function renderSimulation() {
+      const controls = document.getElementById("simControls");
+      controls.innerHTML = simulations.map((sim, index) => `
+        <button class="sim-btn ${index === 0 ? "active" : ""}" data-sim="${sim.id}">
+          <strong>${sim.title}</strong>
+          <span>${sim.desc}</span>
+        </button>
+      `).join("");
+      controls.querySelectorAll(".sim-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          controls.querySelectorAll(".sim-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderSimStage(btn.dataset.sim);
+        });
+      });
+      renderSimStage(simulations[0].id);
+    }
+
+    function renderSimStage(id) {
+      const sim = simulations.find(s => s.id === id);
+      const lane = document.getElementById("eventLane");
+      const max = 180;
+      lane.innerHTML = `<div class="lane-line"></div>` + sim.events.map(event => {
+        const left = 28 + (event.minute / max) * (100 - 8);
+        return `
+          <div class="event-dot" data-type="${event.type}" style="left:${left}%;" title="${event.minute} 分钟：${event.label}"></div>
+          <div class="event-label" style="left:${left}%;">${event.minute}m<br>${event.label}</div>
+        `;
+      }).join("");
+      const cards = document.getElementById("simCards");
+      cards.innerHTML = sim.cards.map(card => `
+        <div class="sim-card"><h4>${card[0]}</h4><p>${card[1]}</p></div>
+      `).join("");
+    }
+
+    function renderStrategies() {
+      const tbody = document.getElementById("strategyTable");
+      tbody.innerHTML = strategies.map(row => `
+        <tr>
+          <td><strong>${row[0]}</strong></td>
+          <td>${row[1]}</td>
+          <td>${row[2]}</td>
+          <td><span class="chip blue">${row[3]}</span></td>
+          <td>${row[4]}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderRisks(filter = "all") {
+      const list = document.getElementById("riskList");
+      const visible = risks.filter(r => filter === "all" || r.level === filter);
+      const label = { high: "高", medium: "中", low: "低" };
+      list.innerHTML = visible.map(r => `
+        <div class="risk-item" data-level="${r.level}">
+          <div class="chip-row" style="margin-top:0;margin-bottom:8px;"><span class="chip ${r.level === "high" ? "red" : r.level === "medium" ? "amber" : "blue"}">${label[r.level]}优先级</span></div>
+          <h3>${r.title}</h3>
+          <p>${r.text}</p>
+        </div>
+      `).join("");
+    }
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderRisks(btn.dataset.filter);
+      });
+    });
+
+    renderFlow();
+    renderSimulation();
+    renderStrategies();
+    renderRisks();
+  </script>
+</body>
+</html>
