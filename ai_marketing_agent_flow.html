@@ -754,7 +754,7 @@
       <div class="section-title">
         <div>
           <h2>真实用户轨迹模拟</h2>
-          <div class="hint">模拟一个注册当天用户从 Kafka 轨迹进入 Agent 判断，并在不同窗口产生策略结果。</div>
+          <div class="hint">以下为按 PRD 字段和规则构造的演示样例，不新增决策规则；实际判断以 PRD 7.1-7.7、11.2、11.3 为准。</div>
         </div>
       </div>
       <div class="timeline">
@@ -784,8 +784,8 @@
               <tr><td><span class="code">confidence_rank</span></td><td>high=3, medium=2, low=1</td><td>来自 LLM 候选输出，经系统一致性校验和必要降级后使用。</td></tr>
               <tr><td>证据强度</td><td>strong &gt; medium &gt; weak</td><td>取候选引用的有效 evidence 中最高强度。</td></tr>
               <tr><td>证据数量</td><td>多 &gt; 少</td><td>仅统计能映射到该候选意图的 evidence。</td></tr>
-              <tr><td>业务优先级</td><td>套餐 &gt; 风险 &gt; 拓客 &gt; 关系 &gt; 标讯 &gt; 企业核验 &gt; 低意图</td><td>保证同一输入稳定可复现。</td></tr>
-              <tr><td>最近强证据</td><td>minute 越大越近</td><td>仅在双方都有强 evidence 且前序因子相同时使用。</td></tr>
+              <tr><td>业务优先级</td><td><span class="code">package_compare</span> &gt; <span class="code">risk_due_diligence</span> &gt; <span class="code">business_lead_generation</span> &gt; <span class="code">relationship_penetration</span> &gt; <span class="code">bid_opportunity</span> &gt; <span class="code">enterprise_verification</span> &gt; <span class="code">low_intent_explore</span></td><td>来自 PRD 7.4.3 意图优先级；仅用于同分候选的稳定兜底排序。</td></tr>
+              <tr><td>最近强证据时间</td><td><span class="code">latest_strong_evidence_minute</span> 越大越近</td><td>同分时选择最近发生强 evidence 的候选。</td></tr>
             </tbody>
           </table>
         </div>
@@ -956,11 +956,11 @@
       {
         id: "summary",
         title: "结构化摘要",
-        desc: "LLM 输出 window_summary、behavior_sequence 和 evidence。",
+        desc: "系统生成 behavior_sequence；摘要 LLM 输出 window_summary 和 evidence。",
         goal: "把窗口行为压缩成可解释、可校验的意图识别输入。",
         input: ["当前窗口准入事件", "累计准入事件", "标准信号、业务类别、信号强度"],
         output: ["window_summary.current_window", "window_summary.cumulative_to_window", "behavior_sequence", "evidence"],
-        rules: ["LLM 不得新增 event_id 或标准信号", "behavior_sequence 包含 sequence_index 判断行为延续", "Evidence 只保留 evidence_id、event_id、minute、signal、signal_strength、reason"],
+        rules: ["behavior_sequence 由系统规则生成，LLM 不得新增、改写或合并 event_ref", "standard_signal、business_category、signal_strength 必须来自输入节点", "Evidence 只保留 evidence_id、event_ref、minute、signal、signal_strength、reason"],
         fail: ["非法 JSON：summary_status=failed", "引用不存在事件：剔除或失败", "强信号存在但 evidence 为空：失败"]
       },
       {
@@ -970,7 +970,7 @@
         goal: "让 LLM 做理解，让代码做确定性裁决。",
         input: ["window_summary", "behavior_sequence", "evidence", "signal_intent_hints"],
         output: ["intent_candidates", "selected_intent", "confidence", "intent_fallback_reason"],
-        rules: ["LLM 不输出策略、发券、渠道、触点", "supporting_evidence_ids 必须引用已有 evidence", "系统按 confidence、证据强度、证据数量、业务优先级排序"],
+        rules: ["LLM 不输出策略、发券、渠道、触点", "supporting_evidence_ids 必须引用已有 evidence", "系统按 confidence、证据强度、证据数量、业务优先级、最近强证据时间排序"],
         fail: ["LLM 超时/非法输出：low_intent_explore", "无有效 evidence：low_intent_explore", "已支付：already_converted 并终止"]
       },
       {
@@ -1048,7 +1048,7 @@
         cards: [
           ["输入", "risk_scan_click、risk_detail_view 进入 evidence。"],
           ["意图", "LLM 输出 risk_due_diligence high，系统选择器确认主意图。"],
-          ["策略", "匹配 S1、S2；按优先级选 S1 进入规则校验。"],
+          ["策略", "按策略池匹配 S1、S2；按 7.5.4 选择最高优先级组，S1 进入规则校验。"],
           ["结果", "若未支付且未命中 F2 互斥，生成通知任务。"]
         ]
       },
@@ -1084,7 +1084,7 @@
         cards: [
           ["输入", "弱信号，evidence 不足以支撑明确业务意图。"],
           ["意图", "selected_intent=low_intent_explore。"],
-          ["策略", "按策略池匹配 S2/S3/S4/S5/S6，再按优先级排序。"],
+          ["策略", "按策略池匹配 S2/S3/S4/S5/S6；按 7.5.4 仅选择当前最高优先级组进入规则校验。"],
           ["结果", "兜底意图不等于强制触达，最终由规则校验决定。"]
         ]
       },
@@ -1232,7 +1232,7 @@
       const copies = {
         risk: {
           "0_3m": ["弱搜索信号进入累计序列；尚不足以单独确认风险尽调。", "可生成 weak evidence，不触发高意图策略。", "F1 可按独立策略执行；Agent 策略继续等待后续窗口。"],
-          "3_15m": ["风险扫描和风险详情形成 strong evidence。", "LLM 输出 risk_due_diligence=high，系统选择器确认主意图。", "匹配 S1、S2；按优先级推进 S1，支付/互斥/频控通过后下发通知。"],
+          "3_15m": ["风险扫描和风险详情形成 strong evidence。", "LLM 输出 risk_due_diligence=high，系统选择器确认主意图。", "按策略池匹配 S1、S2；按 7.5.4 选择最高优先级组，S1 进入规则校验。"],
           "15_60m": ["本窗口无新增时复用截止当前窗口累计摘要。", "若前序已触达，进入频控或互斥判断。", "不重复生成同一策略同一触点任务。"],
           "60_180m": ["首日后段只处理新增强证据或承接回执。", "若已支付或已触达完成，窗口状态终止。", "保留回放记录，不扩大策略范围。"]
         },
@@ -1244,9 +1244,9 @@
         },
         low: {
           "0_3m": ["首页浏览、搜索结果属于弱信号。", "LLM 可输出 low_intent_explore 或低置信业务意图。", "兜底意图不等于强制触达，需继续过策略和规则校验。"],
-          "3_15m": ["累计仍缺少中/强业务证据。", "系统选择器优先避免低意图覆盖强业务意图；本例无强业务意图。", "按业务提供的策略绑定表匹配低意图策略。"],
-          "15_60m": ["若无新增行为，窗口仅记录累计状态。", "可进入频控、互斥、触点可用性校验。", "触点不可用或频控命中时不触达。"],
-          "60_180m": ["若长期无有效行为，可进入沉默类判断。", "S5/S6 是否执行必须以策略表和互斥组为准。", "最终结果写入回放表。"]
+          "3_15m": ["累计仍缺少中/强业务证据。", "系统选择器优先避免低意图覆盖强业务意图；本例无强业务意图。", "按策略池表格匹配 S2、S3、S4、S5、S6。"],
+          "15_60m": ["若无新增行为，窗口仅记录累计状态。", "按 7.5.4 选择当前最高优先级组进入规则校验。", "规则校验被拦截后不得切换其他策略。"],
+          "60_180m": ["若仍为 low_intent_explore，继续按策略池表格生成候选策略。", "策略节点按优先级数值升序选择当前最高优先级组。", "最终是否提交由频控、渠道、触点可用性和承接系统执行结果决定。"]
         },
         converted: {
           "0_3m": ["首次轨迹入窗，暂未发现支付。", "可建立 current_state 和输入快照。", "独立策略是否执行取决于前置查单结果。"],
